@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}home page{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_COMMITEE') %}
+        <div class="alert alert-warning mt-4" role="alert">
+            To change playlist order, slide the songs !
+            Please note that songs accepted in less than <b>1 week</b> can not be swipeable
+        </div>
+    {% endif %}
+    <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <h6 class="border-bottom pb-2 mb-0">Student club end-of-year ball music playlist</h6>
+        <div {% if is_granted('ROLE_COMMITEE') %} id="sortable" {% endif %}>
+            {% for song in acceptedSongs %}
+                {% set sortable = today > song.acceptedAt | date_modify("+7 days")  %}
+                <div class="d-flex text-muted pt-3 {% if not sortable %} no-sort {% endif %}" id="{{ song.id }}">
+                    <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img"
+                         aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#007bff"></rect>
+                        <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
+                    </svg>
+                    <p class="pb-3 mb-0 small lh-sm border-bottom">
+                        <strong class="d-block text-gray-dark">{{song.title}} <small> (by {{ song.user.username }})</small> </strong>
+                        {{ song.message }}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
+{% block js %}
+    {{ parent() }}
+    <script>
+
+        $( function() {
+            $( "#sortable" ).sortable({
+                cursor: "grabbing",
+                axis: 'y',
+                items: "div:not(.no-sort)",
+                update: function (event, ui) {
+                    let orders = $(this).sortable('toArray');
+                    $.ajax({
+                        url: "/song/order/update",
+                        method: "post",
+                        data: {
+                            orders: orders
+                        }
+                    }).done(function (res) {
+                       alert(res.message);
+                    });
+                }
+            });
+        } );
+    </script>
+{% endblock %}

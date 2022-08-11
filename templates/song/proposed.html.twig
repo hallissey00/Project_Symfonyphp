@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Song index{% endblock %}
+
+{% block body %}
+
+    <h1>Proposed Songs</h1>
+
+    <table class="table table-stripped">
+        <thead class="thead-light">
+            <tr class="text-center">
+                <th>Id</th>
+                <th>Title</th>
+                <th>Created At</th>
+                <th>User</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for song in songs %}
+            <tr class="text-center">
+                <td>{{ song.id }}</td>
+                <td>{{ song.title }}</td>
+                <td>{{ song.createdAt ? song.createdAt|date('Y-m-d H:i') : '' }}</td>
+                <td>{{ song.user.username }}</td>
+                <td>
+                    <a class="btn btn-xs btn-primary" href="{{ path('song_vote', {'id': song.id}) }}"><i class="fa-solid fa-thumbs-up"></i> Vote</a>
+                    {% if is_granted('ROLE_COMMITEE') %}
+                        <a class="btn btn-xs btn-info" href="{{ path('song_details', {'id': song.id}) }}"><i class="fa-solid fa-eye"></i> See Voting details</a>
+                        <a class="btn btn-xs btn-success" href="{{ path('song_moderate', {'id': song.id, 'status': constant('App\\Entity\\Song::ACCEPTED_STATUS')}) }}"><i class="fa-solid fa-circle-check"></i> Accept</a>
+                        <a class="btn btn-xs btn-danger" href="{{ path('song_moderate', {'id': song.id, 'status': constant('App\\Entity\\Song::REJECTED_STATUS')}) }}"><i class="fa-solid fa-ban"></i> Reject</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

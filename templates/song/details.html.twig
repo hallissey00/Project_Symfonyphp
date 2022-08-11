@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Details{% endblock %}
+
+{% block body %}
+
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">{{ song.title }}</h1>
+                <h5 class="fw-light">{{ song.user.username }}</h5>
+                <h5 class="fw-light">{{ song.votes | length }} Votes</h5>
+                <p class="lead text-muted">{{ song.message }}</p>
+                <p>
+                    <a class="btn btn-md btn-success my-2" href="{{ path('song_moderate', {'id': song.id, 'status': constant('App\\Entity\\Song::ACCEPTED_STATUS')}) }}"><i class="fa-solid fa-circle-check"></i> Accept</a>
+                    <a class="btn btn-md btn-danger my-2" href="{{ path('song_moderate', {'id': song.id, 'status': constant('App\\Entity\\Song::REJECTED_STATUS')}) }}"><i class="fa-solid fa-ban"></i> Reject</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <h3>Votes details</h3>
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for vote in song.votes %}
+                <div class="col-3">
+                        <div class="card shadow-sm">
+                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>USER:</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ vote.user.username }}</text></svg>
+
+                            <div class="card-body">
+                                <p class="card-text">{{ vote.message }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">{{ vote.createdAt|date('d/m/Y H:i') }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

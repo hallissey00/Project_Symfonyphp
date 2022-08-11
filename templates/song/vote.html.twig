@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Song{% endblock %}
+
+{% block body %}
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Vote for {{ song.title }} </h1>
+                <h5 class="fw-light">this song is proposed by {{ song.user.username }}</h5>
+                <p class="lead text-muted">You are going to vote for this {{ song.status|lower }} song. Voting for the song give more chance to accept it</p>
+                {{ form_start(voteForm) }}
+                    <label>Do you want to add a message for your vote ?</label>
+                    {{ form_widget(voteForm.message) }}
+                <p>
+                    <button type="submit" class="btn btn-primary my-2">Vote</button>
+                    <a href="{{ path('song_index') }}" class="btn btn-secondary my-2">Cancel </a>
+                </p>
+                {{ form_end(voteForm) }}
+
+            </div>
+        </div>
+    </section>
+{% endblock %}

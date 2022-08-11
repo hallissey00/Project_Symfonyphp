@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Song{% endblock %}
+
+{% block body %}
+    <h1>Propose a Song</h1>
+
+    {{ include('song/_form.html.twig') }}
+
+    <a class="btn btn-md btn-primary mt-2" href="{{ path('user_songs') }}">Go to my songs</a>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accepted songs{% endblock %}
+
+{% block body %}
+
+    <h1>Accepted Songs</h1>
+    {%if is_granted('ROLE_COMMITEE') %}
+        <a class="float-right text-right btn btn-lg btn-primary" href="{{ path('default') }}"><i class="fa-solid fa-pen-to-square"></i> Edit PlayList Order</a>
+    {% endif %}
+    <table class="table table-stripped">
+        <thead class="thead-light">
+            <tr class="text-center">
+                <th>Id</th>
+                <th>Title</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+                <th>User</th>
+                <th>Votes</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for songInfos in acceptedSongs %}
+            {% set song = songInfos.song %}
+            <tr class="text-center">
+                <td>{{ song.id }}</td>
+                <td>{{ song.title }}</td>
+                <td>{{ song.createdAt ? song.createdAt|date('Y-m-d H:i') : '' }}</td>
+                <td>{{ song.updatedAt ? song.updatedAt|date('Y-m-d H:i') : '' }}</td>
+                <td>{{ song.user.username }}</td>
+                <td>{{ songInfos.votes }} <i class="fa-solid fa-thumbs-up"></i> </td>
+                <td>
+                    {% if is_granted('ROLE_COMMITEE') %}
+                        <a class="btn btn-xs btn-info" href="{{ path('song_details', {'id': song.id}) }}"><i class="fa-solid fa-eye"></i> See Voting details</a>
+                    {% endif %}
+                    <a class="btn btn-xs btn-primary" href="{{ path('song_vote', {'id': song.id}) }}"><i class="fa-solid fa-thumbs-up"></i> Vote</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
