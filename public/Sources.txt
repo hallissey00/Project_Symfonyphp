@@ -1,0 +1,8 @@
+1. [Symfony](https://symfony.com/)
+2. [Twig](https://twig.symfony.com/)
+3. [Doctrine](https://www.doctrine-project.org/)
+4. [MYSQL](https://www.mysql.com/)
+5. [Bootstrap] https://getbootstrap.com/
+6. [Securing the Admin Backend] https://symfony.com/doc/current/the-fast-track/en/15-security.html
+7.[dr-matt-smith/php-symfony-6-book] https://github.com/dr-matt-smith/php-symfony-6-book
+8.[Databases and the Doctrine ORM] https://symfony.com/doc/current/doctrine.html
